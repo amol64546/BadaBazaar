@@ -32,13 +32,10 @@ public class Customer {
 
     private int age;
 
-//    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Card> cardList = new ArrayList<>();
 
-//    @OneToOne(mappedBy = "customer",cascade = CascadeType.ALL,orphanRemoval = true)
     private String cartId;
 
-//    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Ordered> orderList = new ArrayList<>();
 
 }

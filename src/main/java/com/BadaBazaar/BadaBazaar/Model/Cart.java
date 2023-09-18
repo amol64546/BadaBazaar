@@ -23,10 +23,7 @@ public class Cart {
 
     private int cartTotal;
 
-//    @OneToOne
-//    @JoinColumn
     private String customerId;
 
-//    @OneToMany(mappedBy = "cart",cascade = CascadeType.ALL)
     private List<Item> itemList = new ArrayList<>();
 }

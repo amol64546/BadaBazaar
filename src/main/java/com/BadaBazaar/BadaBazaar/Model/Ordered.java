@@ -31,11 +31,8 @@ public class Ordered {
 
     private String cardUsedForPayment;
 
-//    @ManyToOne
-//    @JoinColumn
     private String customerId;
 
-//    @OneToMany(mappedBy = "ordered",cascade = CascadeType.ALL)
     private List<Item> itemList = new ArrayList<>();
 
 }

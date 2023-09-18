@@ -31,7 +31,6 @@ public class Seller {
     @Indexed(unique = true)
     private String panNo;
 
-//    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
     private List<Product> productList = new ArrayList<>();
 
 

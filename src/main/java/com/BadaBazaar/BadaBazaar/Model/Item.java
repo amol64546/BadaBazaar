@@ -19,16 +19,10 @@ public class Item {
 
     private int requiredQuantity;
 
-//    @ManyToOne
-//    @JoinColumn
     private String cartId;
 
-//    @OneToOne
-//    @JoinColumn
     private String productId;
 
-//    @ManyToOne
-//    @JoinColumn
     private String orderedId;
 
 }

@@ -22,19 +22,12 @@ public class Product {
     private int price;
     private int quantity;
 
-//    @Enumerated(EnumType.STRING)
     private ProductCategory productCategory;
 
-//    @Enumerated(EnumType.STRING)
     private ProductStatus productStatus;
 
-
-//    @ManyToOne
-//    @JoinColumn
-//    @DBRef
     private String sellerId;
 
-    //    @OneToOne(mappedBy = "product",cascade = CascadeType.ALL)
     private String itemId;
 
 }

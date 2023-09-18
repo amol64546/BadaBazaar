@@ -10,9 +10,6 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-//mySql
-//@Entity
-//@Table(name = "card")
 
 //mongoDb
 @Document(collection = "card")
@@ -24,11 +21,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @AllArgsConstructor
 public class Card {
     @Id
-//  @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private int id;
     private String _id;
 
-//    @Column(unique = true)
     @Indexed(unique = true)
     @Field(name="cardNo")
     private String cardNo;
@@ -36,11 +30,7 @@ public class Card {
     private int cvv;
     private String expiry;
 
-//    @Enumerated(EnumType.STRING)
     private CardType cardType;
 
-//    @ManyToOne
-//    @JoinColumn
-//    private Customer customer;
     private String customerId;
 }

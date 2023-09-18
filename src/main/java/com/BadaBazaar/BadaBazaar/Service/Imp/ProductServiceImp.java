@@ -35,10 +35,11 @@ public class ProductServiceImp implements ProductService {
 
         Product product = ProductConverter.productRequestDtoToProduct(productByCategoryRequestDto);
 
-        product.setSeller(seller);
+        product.setSellerId(seller.get_id());
         seller.getProductList().add(product);
 
         sellerRepository.save(seller);
+        productRepository.save(product);
         return "Product has been added";
     }
 

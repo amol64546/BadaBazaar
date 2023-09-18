@@ -1,8 +1,5 @@
 package com.BadaBazaar.BadaBazaar.Service.Imp;
 
-import com.BadaBazaar.BadaBazaar.Enum.ProductCategory;
-import com.BadaBazaar.BadaBazaar.Enum.ProductStatus;
-import com.BadaBazaar.BadaBazaar.Model.Customer;
 import com.BadaBazaar.BadaBazaar.Model.Item;
 import com.BadaBazaar.BadaBazaar.Model.Product;
 import com.BadaBazaar.BadaBazaar.Repository.CustomerRepository;
@@ -12,8 +9,6 @@ import com.BadaBazaar.BadaBazaar.ResponseDto.ItemResponseDto;
 import com.BadaBazaar.BadaBazaar.Service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ItemServiceImp implements ItemService {
@@ -29,7 +24,7 @@ public class ItemServiceImp implements ItemService {
 
 
     @Override
-    public ItemResponseDto viewItem(int productId) throws Exception{
+    public ItemResponseDto viewItem(String productId) throws Exception{
 
         Product product;
 
@@ -41,7 +36,7 @@ public class ItemServiceImp implements ItemService {
 
         Item item = Item.builder()
                 .requiredQuantity(0)
-                .product(product)
+                .productId(product.get_id())
                 .build();
 
         itemRepository.save(item);

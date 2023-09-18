@@ -14,5 +14,5 @@ public class ProductByCategoryRequestDto {
 
     private ProductCategory productCategory;
 
-    private int sellerId;
+    private String sellerId;
 }

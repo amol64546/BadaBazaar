@@ -3,6 +3,8 @@ package com.BadaBazaar.BadaBazaar.Service.Imp;
 import com.BadaBazaar.BadaBazaar.Enum.ProductStatus;
 import com.BadaBazaar.BadaBazaar.Model.*;
 import com.BadaBazaar.BadaBazaar.Repository.CustomerRepository;
+import com.BadaBazaar.BadaBazaar.Repository.ItemRepository;
+import com.BadaBazaar.BadaBazaar.Repository.OrderRepository;
 import com.BadaBazaar.BadaBazaar.Repository.ProductRepository;
 import com.BadaBazaar.BadaBazaar.RequestDto.OrderRequestDto;
 import com.BadaBazaar.BadaBazaar.ResponseDto.OrderResponseDto;
@@ -23,7 +25,12 @@ public class OrderServiceImp implements OrderService {
     CustomerRepository customerRepository;
 
     @Autowired
+    OrderRepository orderRepository;
+
+    @Autowired
     JavaMailSender emailSender;
+    @Autowired
+    private ItemRepository itemRepository;
 
     @Override
     public OrderResponseDto placeOrder(OrderRequestDto orderRequestDto) throws Exception {
@@ -70,11 +77,13 @@ public class OrderServiceImp implements OrderService {
         // Item
         Item item = new Item();
         item.setRequiredQuantity(orderRequestDto.getRequiredQuantity());
-        item.setOrdered(ordered);
-        item.setProduct(product);
+        item.setOrderedId(ordered.get_id());
+        item.setProductId(product.get_id());
+        itemRepository.save(item);
 
         ordered.getItemList().add(item);
-        ordered.setCustomer(customer);
+        ordered.setCustomerId(customer.get_id());
+        orderRepository.save(ordered);
 
         // product quantity
         int leftQuantity = product.getQuantity()- orderRequestDto.getRequiredQuantity();
@@ -103,14 +112,14 @@ public class OrderServiceImp implements OrderService {
 
 
         // send an email
-        String text = "Congrats your order with total value "+savedOrdered.getTotalCost()+" has been placed";
-
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("amolnakhate240@gmail.com");
-        message.setTo(customer.getEmail());
-        message.setSubject("Order Placed Notification");
-        message.setText(text);
-        emailSender.send(message);
+//        String text = "Congrats your order with total value "+savedOrdered.getTotalCost()+" has been placed";
+//
+//        SimpleMailMessage message = new SimpleMailMessage();
+//        message.setFrom("amolnakhate240@gmail.com");
+//        message.setTo(customer.getEmail());
+//        message.setSubject("Order Placed Notification");
+//        message.setText(text);
+//        emailSender.send(message);
 
         return orderResponseDto;
     }

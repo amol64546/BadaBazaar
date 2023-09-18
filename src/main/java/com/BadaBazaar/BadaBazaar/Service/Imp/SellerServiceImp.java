@@ -24,7 +24,7 @@ public class SellerServiceImp implements SellerService {
         Seller seller = SellerConverter.sellerRequestDtoToSeller(sellerRequestDto);
 
         sellerRepository.save(seller);
-        return "Seller has been added";
+        return "Seller ID: " + seller.get_id();
     }
 
     @Override

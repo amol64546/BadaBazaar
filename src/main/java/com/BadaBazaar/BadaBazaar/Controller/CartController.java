@@ -33,7 +33,7 @@ public class CartController {
     }
 
     @PostMapping("/checkout/{customerId}")
-    public ResponseEntity checkout(@PathVariable int customerId)throws Exception{
+    public ResponseEntity checkout(@PathVariable String customerId)throws Exception{
         List<OrderResponseDto> orderResponseDtoList;
         try{
             orderResponseDtoList = cartService.checkout(customerId);
@@ -45,7 +45,7 @@ public class CartController {
     }
 
     @GetMapping("/view/{customerId}")
-    public List<ItemResponseDto> viewItems(@PathVariable int customerId)throws Exception{
+    public List<ItemResponseDto> viewItems(@PathVariable String customerId)throws Exception{
         return cartService.viewItems(customerId);
     }
 

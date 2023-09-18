@@ -1,12 +1,11 @@
 package com.BadaBazaar.BadaBazaar.Repository;
 
 import com.BadaBazaar.BadaBazaar.Model.Seller;
-import com.BadaBazaar.BadaBazaar.ResponseDto.SellerResponseDto;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SellerRepository extends JpaRepository<Seller,Integer> {
+public interface SellerRepository extends MongoRepository<Seller,String> {
 
     Seller findByPanNo(String panNo);
 }

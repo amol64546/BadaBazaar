@@ -1,10 +1,7 @@
 package com.BadaBazaar.BadaBazaar.Service;
 
-import com.BadaBazaar.BadaBazaar.Model.Customer;
-import com.BadaBazaar.BadaBazaar.Repository.CustomerRepository;
 import com.BadaBazaar.BadaBazaar.RequestDto.CustomerRequestDto;
 import com.BadaBazaar.BadaBazaar.ResponseDto.CustomerResponseDto;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -14,13 +11,13 @@ public interface CustomerService {
 
      List<CustomerResponseDto> getAll();
 
-    CustomerResponseDto getCustomerById(int customerId);
+    CustomerResponseDto getCustomerById(String customerId);
 
-    void deleteById(int customerId);
+    void deleteById(String customerId);
 
     CustomerResponseDto getCustomerByEmail(String email);
 
-    CustomerResponseDto updateMobNo(int customerId,String mobNo);
+    CustomerResponseDto updateMobNo(String customerId,String mobNo);
 
-    CustomerResponseDto updateEmail(int customerId, String email);
+    CustomerResponseDto updateEmail(String customerId, String email);
 }

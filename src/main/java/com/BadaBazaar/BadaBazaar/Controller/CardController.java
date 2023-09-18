@@ -31,7 +31,7 @@ public class CardController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity remove(@RequestParam int customerId , @RequestParam int cardId){
+    public ResponseEntity remove(@RequestParam String customerId , @RequestParam String cardId){
 
         try{
             cardService.remove(customerId, cardId);
@@ -42,7 +42,7 @@ public class CardController {
     }
 
     @GetMapping("/view/all")
-    public ResponseEntity getAllCardsByCustomerId(@RequestParam int customerId) {
+    public ResponseEntity getAllCardsByCustomerId(@RequestParam String customerId) {
         CardResponseDto cardResponseDto;
         try{
             cardResponseDto = cardService.getAllCardsByCustomerId(customerId);

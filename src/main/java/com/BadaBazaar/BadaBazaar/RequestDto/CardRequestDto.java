@@ -5,10 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,5 +15,5 @@ public class CardRequestDto {
     private String expiry;
 
     private CardType cardType;
-    private int customerId;
+    private String customerId;
 }

@@ -1,32 +1,34 @@
 package com.BadaBazaar.BadaBazaar.Model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 
-@Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "item")
+@Document
 public class Item {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private String _id;
 
     private int requiredQuantity;
 
-    @ManyToOne
-    @JoinColumn
-    private Cart cart;
+//    @ManyToOne
+//    @JoinColumn
+    private String cartId;
 
-    @OneToOne
-    @JoinColumn
-    private Product product;
+//    @OneToOne
+//    @JoinColumn
+    private String productId;
 
-    @ManyToOne
-    @JoinColumn
-    private Ordered ordered;
+//    @ManyToOne
+//    @JoinColumn
+    private String orderedId;
 
 }

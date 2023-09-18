@@ -1,35 +1,37 @@
 package com.BadaBazaar.BadaBazaar.Model;
 
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "seller")
+@Document
 public class Seller {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private String _id;
+
     private String name;
 
-    @Column(unique = true)
+    @Indexed(unique = true)
     private String mobNo;
 
-    @Column(unique = true)
+    @Indexed(unique = true)
     private String email;
 
     private int age;
 
-    @Column(unique = true)
+    @Indexed(unique = true)
     private String panNo;
 
-    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
+//    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
     private List<Product> productList = new ArrayList<>();
 
 

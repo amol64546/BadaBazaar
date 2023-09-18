@@ -1,31 +1,46 @@
 package com.BadaBazaar.BadaBazaar.Model;
 
 import com.BadaBazaar.BadaBazaar.Enum.CardType;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-import javax.persistence.*;
+//mySql
+//@Entity
+//@Table(name = "card")
 
-@Entity
+//mongoDb
+@Document(collection = "card")
+
+//lombok
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "card")
 public class Card {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+//  @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private int id;
+    private String _id;
 
-    @Column(unique = true)
+//    @Column(unique = true)
+    @Indexed(unique = true)
+    @Field(name="cardNo")
     private String cardNo;
 
     private int cvv;
     private String expiry;
 
-    @Enumerated(EnumType.STRING)
+//    @Enumerated(EnumType.STRING)
     private CardType cardType;
 
-    @ManyToOne
-    @JoinColumn
-    private Customer customer;
+//    @ManyToOne
+//    @JoinColumn
+//    private Customer customer;
+    private String customerId;
 }

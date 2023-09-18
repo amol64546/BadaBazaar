@@ -20,7 +20,7 @@ public class ItemController {
     ItemServiceImp itemService;
 
     @GetMapping("/view/{productId}")
-    public ItemResponseDto viewItem(@PathVariable("productId") int productId ) throws Exception {
+    public ItemResponseDto viewItem(@PathVariable("productId") String productId ) throws Exception {
         return itemService.viewItem(productId);
     }
 

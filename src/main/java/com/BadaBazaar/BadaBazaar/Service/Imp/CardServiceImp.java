@@ -1,6 +1,5 @@
 package com.BadaBazaar.BadaBazaar.Service.Imp;
 
-import com.BadaBazaar.BadaBazaar.Controller.CardController;
 import com.BadaBazaar.BadaBazaar.Converter.CardConverter;
 import com.BadaBazaar.BadaBazaar.Model.Card;
 import com.BadaBazaar.BadaBazaar.Model.Customer;
@@ -36,10 +35,12 @@ public class CardServiceImp implements CardService {
         }
 
         Card card = CardConverter.cardRequestDtoToCard(cardRequestDto);
-        card.setCustomer(customer);
+        card.setCustomerId(customer.get_id());
 
         customer.getCardList().add(card);
         customerRepository.save(customer);
+
+        cardRepository.save(card);
 
         CardResponseDto cardResponseDto = new CardResponseDto();
         cardResponseDto.setCustomerName(customer.getName());
@@ -56,7 +57,7 @@ public class CardServiceImp implements CardService {
     }
 
     @Override
-    public void remove(int customerId, int cardId) throws Exception{
+    public void remove(String customerId, String cardId) throws Exception{
 
         Customer customer = customerRepository.findById(customerId).get();
         Card card = cardRepository.findById(cardId).get();
@@ -71,7 +72,7 @@ public class CardServiceImp implements CardService {
     }
 
     @Override
-    public CardResponseDto getAllCardsByCustomerId(int customerId) throws Exception{
+    public CardResponseDto getAllCardsByCustomerId(String customerId) throws Exception{
         Customer customer;
         try{
             customer = customerRepository.findById(customerId).get();

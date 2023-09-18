@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ItemService {
 
-    public ItemResponseDto viewItem(int productId) throws Exception;
+    public ItemResponseDto viewItem(String productId) throws Exception;
 
 
 }

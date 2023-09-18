@@ -1,40 +1,44 @@
 package com.BadaBazaar.BadaBazaar.Model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "customer")
+@Document
 public class Customer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private String _id;
 
     private String name;
 
-    @Column(unique = true)
+    @Indexed(unique = true)
     private String mobNo;
 
-    @Column(unique = true)
+    @Indexed(unique = true)
     private String email;
 
     private int age;
 
-    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL,orphanRemoval = true)
+//    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Card> cardList = new ArrayList<>();
 
-    @OneToOne(mappedBy = "customer",cascade = CascadeType.ALL,orphanRemoval = true)
-    private Cart cart;
+//    @OneToOne(mappedBy = "customer",cascade = CascadeType.ALL,orphanRemoval = true)
+    private String cartId;
 
-    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL,orphanRemoval = true)
+//    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Ordered> orderList = new ArrayList<>();
 
 }

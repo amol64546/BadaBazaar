@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class OrderRequestDto {
-    private int productId;
-    private int customerId;
+    private String productId;
+    private String customerId;
     private int requiredQuantity;
 }

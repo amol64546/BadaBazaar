@@ -1,25 +1,28 @@
 package com.BadaBazaar.BadaBazaar.Model;
 
-import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Entity
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "ordered")
+@Document
 public class Ordered {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private String _id;
 
-    @CreationTimestamp
+    @CreatedDate
     private Date orderDate;
 
     private int totalCost;
@@ -28,11 +31,11 @@ public class Ordered {
 
     private String cardUsedForPayment;
 
-    @ManyToOne
-    @JoinColumn
-    private Customer customer;
+//    @ManyToOne
+//    @JoinColumn
+    private String customerId;
 
-    @OneToMany(mappedBy = "ordered",cascade = CascadeType.ALL)
+//    @OneToMany(mappedBy = "ordered",cascade = CascadeType.ALL)
     private List<Item> itemList = new ArrayList<>();
 
 }

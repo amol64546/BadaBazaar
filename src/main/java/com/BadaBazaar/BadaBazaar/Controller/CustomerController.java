@@ -1,14 +1,9 @@
 package com.BadaBazaar.BadaBazaar.Controller;
 
-import com.BadaBazaar.BadaBazaar.Model.Customer;
-import com.BadaBazaar.BadaBazaar.Repository.CustomerRepository;
 import com.BadaBazaar.BadaBazaar.RequestDto.CustomerRequestDto;
 import com.BadaBazaar.BadaBazaar.ResponseDto.CustomerResponseDto;
-import com.BadaBazaar.BadaBazaar.Service.CustomerService;
 import com.BadaBazaar.BadaBazaar.Service.Imp.CustomerServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +19,7 @@ public class CustomerController {
     }
 
     @GetMapping("/get/{customerId}")
-    public CustomerResponseDto getCustomerById(@PathVariable int customerId) throws Exception {
+    public CustomerResponseDto getCustomerById(@PathVariable String customerId) throws Exception {
         try{
             return customerService.getCustomerById(customerId);
         }catch (Exception e){
@@ -49,7 +44,7 @@ public class CustomerController {
     }
 
     @PutMapping("/update/mob")
-    public CustomerResponseDto updateMobNo(@RequestParam int customerId,@RequestParam String mobNo) throws Exception{
+    public CustomerResponseDto updateMobNo(@RequestParam String customerId,@RequestParam String mobNo) throws Exception{
         try{
             return customerService.updateMobNo(customerId,mobNo);
         }catch (Exception e){
@@ -57,7 +52,7 @@ public class CustomerController {
         }
     }
     @PutMapping("/update/email")
-    public CustomerResponseDto updateEmail(@RequestParam int customerId,@RequestParam String email) throws Exception{
+    public CustomerResponseDto updateEmail(@RequestParam String customerId,@RequestParam String email) throws Exception{
         try{
             return customerService.updateEmail(customerId,email);
         }catch (Exception e){
@@ -66,7 +61,7 @@ public class CustomerController {
     }
 
     @DeleteMapping("/delete/{customerId}")
-    public String deleteById(@PathVariable int customerId) throws Exception{
+    public String deleteById(@PathVariable String customerId) throws Exception{
         try{
             customerService.deleteById(customerId);
         }catch (Exception e){

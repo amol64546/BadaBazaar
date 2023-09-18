@@ -5,12 +5,14 @@ import com.BadaBazaar.BadaBazaar.Enum.ProductStatus;
 import com.BadaBazaar.BadaBazaar.Exception.CustomerNotFoundException;
 import com.BadaBazaar.BadaBazaar.Model.*;
 import com.BadaBazaar.BadaBazaar.Repository.CustomerRepository;
+import com.BadaBazaar.BadaBazaar.Repository.OrderRepository;
 import com.BadaBazaar.BadaBazaar.Repository.ProductRepository;
 import com.BadaBazaar.BadaBazaar.RequestDto.OrderRequestDto;
 import com.BadaBazaar.BadaBazaar.ResponseDto.ItemResponseDto;
 import com.BadaBazaar.BadaBazaar.ResponseDto.OrderResponseDto;
 import com.BadaBazaar.BadaBazaar.Service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -25,10 +27,15 @@ public class CartServiceImp implements CartService {
     CustomerRepository customerRepository;
 
     @Autowired
+    MongoTemplate mongoTemplate;
+
+    @Autowired
     ProductRepository productRepository;
 
     @Autowired
     JavaMailSender emailSender;
+    @Autowired
+    private OrderRepository orderRepository;
 
 
     @Override
@@ -58,15 +65,15 @@ public class CartServiceImp implements CartService {
             throw new Exception("Product quantity is less");
         }
 
-        Cart cart = customer.getCart();
+        Cart cart = mongoTemplate.findById(customer.getCartId(), Cart.class);
         cart.setCartTotal(product.getPrice() * orderRequestDto.getRequiredQuantity());
-        cart.setCustomer(customer);
+        cart.setCustomerId(customer.get_id());
 
         // Item
         Item item = new Item();
         item.setRequiredQuantity(orderRequestDto.getRequiredQuantity());
-        item.setProduct(product);
-        item.setCart(cart);
+        item.setProductId(product.get_id());
+        item.setCartId(cart.get_id());
 
         cart.getItemList().add(item);
 
@@ -76,7 +83,7 @@ public class CartServiceImp implements CartService {
     }
 
     @Override
-    public List<OrderResponseDto> checkout(int customerId) throws Exception{
+    public List<OrderResponseDto> checkout(String customerId) throws Exception{
         Customer customer;
         try{
             customer = customerRepository.findById(customerId).get();
@@ -87,12 +94,12 @@ public class CartServiceImp implements CartService {
 
         List<OrderResponseDto> orderResponseDtoList = new ArrayList<>();
 
-        Cart cart = customer.getCart();
+        Cart cart = mongoTemplate.findById(customer.getCartId(), Cart.class);
         int totalCost = cart.getCartTotal();
 
         for(Item item: cart.getItemList()){
 
-            Product product = item.getProduct();
+            Product product = mongoTemplate.findById(item.getProductId(),Product.class);
 
             // check for product quantity
             if(product.getQuantity() == 0 ){
@@ -107,7 +114,7 @@ public class CartServiceImp implements CartService {
             ordered.setTotalCost(product.getPrice() * item.getRequiredQuantity());
             ordered.setDeliveryCharge(40);
             ordered.getItemList().add(item);
-            ordered.setCustomer(customer);
+            ordered.setCustomerId(customer.get_id());
 
             // Card
             Card card = customer.getCardList().get(0);
@@ -119,7 +126,7 @@ public class CartServiceImp implements CartService {
 
             ordered.setCardUsedForPayment(cardNo);
 
-            item.setOrdered(ordered);
+            item.setOrderedId(ordered.get_id());
             customer.getOrderList().add(ordered);
 
             // product quantity
@@ -128,6 +135,8 @@ public class CartServiceImp implements CartService {
                 product.setProductStatus(ProductStatus.OUT_OF_STOCK);
             }
             product.setQuantity(leftQuantity);
+
+            orderRepository.save(ordered);
 
             OrderResponseDto orderResponseDto = OrderResponseDto.builder()
                     .productName(product.getName())
@@ -144,14 +153,14 @@ public class CartServiceImp implements CartService {
         }
 
         // send an email
-        String text = "Congrats your order with total value "+totalCost+" has been placed";
-
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("amolnakhate240@gmail.com");
-        message.setTo(customer.getEmail());
-        message.setSubject("Order Placed Notification");
-        message.setText(text);
-        emailSender.send(message);
+//        String text = "Congrats your order with total value "+totalCost+" has been placed";
+//
+//        SimpleMailMessage message = new SimpleMailMessage();
+//        message.setFrom("amolnakhate240@gmail.com");
+//        message.setTo(customer.getEmail());
+//        message.setSubject("Order Placed Notification");
+//        message.setText(text);
+//        emailSender.send(message);
 
         cart.setItemList(new ArrayList<>());
         cart.setCartTotal(0);
@@ -162,11 +171,14 @@ public class CartServiceImp implements CartService {
     }
 
     @Override
-    public List<ItemResponseDto> viewItems(int customerId) {
+    public List<ItemResponseDto> viewItems(String customerId) {
         Customer customer = customerRepository.findById(customerId).get();
         List<ItemResponseDto> itemResponseDtos = new ArrayList<>();
-        for(Item item:  customer.getCart().getItemList()){
-            itemResponseDtos.add(ProductConverter.productToItemResponseDto(item.getProduct()));
+
+        Cart cart = mongoTemplate.findById(customer.getCartId(), Cart.class);
+        for(Item item:  cart.getItemList()){
+            Product product = mongoTemplate.findById(item.getProductId(),Product.class);
+            itemResponseDtos.add(ProductConverter.productToItemResponseDto(product));
         }
         return itemResponseDtos;
     }

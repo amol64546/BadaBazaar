@@ -7,7 +7,6 @@ import com.BadaBazaar.BadaBazaar.Repository.CustomerRepository;
 import com.BadaBazaar.BadaBazaar.RequestDto.CustomerRequestDto;
 import com.BadaBazaar.BadaBazaar.ResponseDto.CustomerResponseDto;
 import com.BadaBazaar.BadaBazaar.Service.CustomerService;
-import org.hibernate.transform.CacheableResultTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +25,9 @@ public class CustomerServiceImp implements CustomerService {
 
         Cart cart = new Cart();
         cart.setCartTotal(0);
-        cart.setCustomer(customer);
+        cart.setCustomerId(customer.get_id());
 
-        customer.setCart(cart);
+        customer.setCartId(cart.get_id());
 
         customerRepository.save(customer);
 
@@ -45,14 +44,14 @@ public class CustomerServiceImp implements CustomerService {
     }
 
     @Override
-    public CustomerResponseDto getCustomerById(int customerId) {
+    public CustomerResponseDto getCustomerById(String customerId) {
         Customer customer = customerRepository.findById(customerId).get();
 
         return CustomerConverter.CustomerToCustomerResponseDto(customer);
     }
 
     @Override
-    public void deleteById(int customerId) {
+    public void deleteById(String customerId) {
         customerRepository.deleteById(customerId);
     }
 
@@ -63,7 +62,7 @@ public class CustomerServiceImp implements CustomerService {
     }
 
     @Override
-    public CustomerResponseDto updateMobNo(int customerId, String mobNo) {
+    public CustomerResponseDto updateMobNo(String customerId, String mobNo) {
         Customer customer = customerRepository.findById(customerId).get();
         customer.setMobNo(mobNo);
         customerRepository.save(customer);
@@ -71,7 +70,7 @@ public class CustomerServiceImp implements CustomerService {
     }
 
     @Override
-    public CustomerResponseDto updateEmail(int customerId, String email) {
+    public CustomerResponseDto updateEmail(String customerId, String email) {
         Customer customer = customerRepository.findById(customerId).get();
         customer.setEmail(email);
         customerRepository.save(customer);

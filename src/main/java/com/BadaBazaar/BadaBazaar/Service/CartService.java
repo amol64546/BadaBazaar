@@ -11,7 +11,7 @@ import java.util.List;
 public interface CartService {
     String addToCart(OrderRequestDto orderRequestDto)throws Exception;
 
-    List<OrderResponseDto> checkout(int customerId)throws Exception;
+    List<OrderResponseDto> checkout(String customerId)throws Exception;
 
-    List<ItemResponseDto> viewItems(int customerId);
+    List<ItemResponseDto> viewItems(String customerId);
 }

@@ -26,20 +26,20 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public String addProduct(ProductByCategoryRequestDto productByCategoryRequestDto) throws SellerNotFoundException {
-        Seller seller;
-        try{
-            seller = sellerRepository.findById(productByCategoryRequestDto.getSellerId()).get();
-        }catch (Exception e){
-            throw new SellerNotFoundException("Seller does not present");
-        }
-
-        Product product = ProductConverter.productRequestDtoToProduct(productByCategoryRequestDto);
-
-        product.setSellerId(seller.get_id());
-        seller.getProductList().add(product);
-
-        sellerRepository.save(seller);
-        productRepository.save(product);
+//        Seller seller;
+//        try{
+//            seller = sellerRepository.findById(productByCategoryRequestDto.getSellerId()).get();
+//        }catch (Exception e){
+//            throw new SellerNotFoundException("Seller does not present");
+//        }
+//
+//        Product product = ProductConverter.productRequestDtoToProduct(productByCategoryRequestDto);
+//
+//        product.setSellerId(seller.get_id());
+//        seller.getProductList().add(product);
+//
+//        sellerRepository.save(seller);
+//        productRepository.save(product);
         return "Product has been added";
     }
 

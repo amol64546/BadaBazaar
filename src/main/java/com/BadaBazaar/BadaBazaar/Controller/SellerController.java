@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 
 import java.util.List;
@@ -29,12 +31,12 @@ public class SellerController {
     }
 
     @GetMapping("/get/all")
-    public List<SellerResponseDto> getAllSellers(){
+    public Flux<SellerResponseDto> getAllSellers(){
         return sellerService.getAllSellers();
     }
 
     @GetMapping("/get/pan")
-    public SellerResponseDto getSellerByPan(@RequestParam String panNo){
+    public Mono<SellerResponseDto> getSellerByPan(@RequestParam String panNo){
         return sellerService.getSellerByPan(panNo);
     }
 

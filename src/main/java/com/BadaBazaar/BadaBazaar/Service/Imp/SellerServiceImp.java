@@ -8,6 +8,8 @@ import com.BadaBazaar.BadaBazaar.ResponseDto.SellerResponseDto;
 import com.BadaBazaar.BadaBazaar.Service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,27 +22,20 @@ public class SellerServiceImp implements SellerService {
     SellerRepository sellerRepository;
 
     @Override
-    public String addSeller(SellerRequestDto sellerRequestDto) {
+    public Mono<String> addSeller(SellerRequestDto sellerRequestDto) {
         Seller seller = SellerConverter.sellerRequestDtoToSeller(sellerRequestDto);
-
-        sellerRepository.save(seller);
-        return "Seller ID: " + seller.get_id();
+        return sellerRepository.save(seller)
+                .map(savedSeller -> "Seller ID: " + savedSeller.get_id());
     }
 
     @Override
-    public List<SellerResponseDto> getAllSellers() {
-        List<Seller> sellers = sellerRepository.findAll();
-
-        List<SellerResponseDto> list = new ArrayList<>();
-
-        for(Seller s: sellers){
-            list.add(SellerConverter.sellerToSellerResponseDto(s));
-        }
-        return list;
+    public Flux<SellerResponseDto> getAllSellers() {
+        return sellerRepository.findAll()
+                .map(SellerConverter::sellerToSellerResponseDto);
     }
 
-    public SellerResponseDto getSellerByPan(String panNo) {
-        Seller seller = sellerRepository.findByPanNo(panNo);
-        return SellerConverter.sellerToSellerResponseDto(seller);
+    public Mono<SellerResponseDto> getSellerByPan(String panNo) {
+        return sellerRepository.findByPanNo(panNo)
+                .map(SellerConverter::sellerToSellerResponseDto);
     }
 }

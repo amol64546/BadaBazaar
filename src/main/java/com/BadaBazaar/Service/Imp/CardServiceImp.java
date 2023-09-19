@@ -1,0 +1,97 @@
+package com.BadaBazaar.Service.Imp;
+
+import com.BadaBazaar.Converter.CardConverter;
+import com.BadaBazaar.Model.Card;
+import com.BadaBazaar.Model.Customer;
+import com.BadaBazaar.Repository.CardRepository;
+import com.BadaBazaar.Repository.CustomerRepository;
+import com.BadaBazaar.RequestDto.CardRequestDto;
+import com.BadaBazaar.ResponseDto.CardDto;
+import com.BadaBazaar.ResponseDto.CardResponseDto;
+import com.BadaBazaar.Service.CardService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class CardServiceImp implements CardService {
+
+    @Autowired
+    CardRepository cardRepository;
+
+    @Autowired
+    CustomerRepository customerRepository;
+
+
+    @Override
+    public CardResponseDto add(CardRequestDto cardRequestDto) throws Exception {
+        Customer customer;
+        try{
+            customer = customerRepository.findById(cardRequestDto.getCustomerId()).get();
+        }catch (Exception e){
+            throw new Exception("customer does not present");
+        }
+
+        Card card = CardConverter.cardRequestDtoToCard(cardRequestDto);
+        card.setCustomerId(customer.get_id());
+
+        customer.getCardList().add(card);
+        customerRepository.save(customer);
+
+        cardRepository.save(card);
+
+        CardResponseDto cardResponseDto = new CardResponseDto();
+        cardResponseDto.setCustomerName(customer.getName());
+
+        List<CardDto> cardDtoList = new ArrayList<>();
+
+        for(Card c: customer.getCardList()){
+            CardDto cardDto = CardConverter.cardToCardDto(c);
+            cardDtoList.add(cardDto);
+        }
+        cardResponseDto.setCardDtoList(cardDtoList);
+
+        return cardResponseDto;
+    }
+
+    @Override
+    public void remove(String customerId, String cardId) throws Exception{
+
+        Customer customer = customerRepository.findById(customerId).get();
+        Card card = cardRepository.findById(cardId).get();
+
+        // card is not corresponding to customer
+        if(!customer.getCardList().contains(card)){
+            throw new Exception();
+        }
+
+        customer.getCardList().remove(card);
+        cardRepository.delete(card);
+    }
+
+    @Override
+    public CardResponseDto getAllCardsByCustomerId(String customerId) throws Exception{
+        Customer customer;
+        try{
+            customer = customerRepository.findById(customerId).get();
+        }catch (Exception e){
+            throw new Exception("customer does not present");
+        }
+
+        CardResponseDto cardResponseDto = new CardResponseDto();
+        cardResponseDto.setCustomerName(customer.getName());
+        List<CardDto> cardDtoList = new ArrayList<>();
+
+        for(Card c: customer.getCardList()){
+            CardDto cardDto = CardConverter.cardToCardDto(c);
+            cardDtoList.add(cardDto);
+        }
+        cardResponseDto.setCardDtoList(cardDtoList);
+
+        return cardResponseDto;
+    }
+
+
+}

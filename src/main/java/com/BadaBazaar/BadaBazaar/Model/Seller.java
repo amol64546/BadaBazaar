@@ -20,15 +20,15 @@ public class Seller {
 
     private String name;
 
-    @Indexed(unique = true)
+//    @Indexed(unique = true)
     private String mobNo;
 
-    @Indexed(unique = true)
+//    @Indexed(unique = true)
     private String email;
 
     private int age;
 
-    @Indexed(unique = true)
+//    @Indexed(unique = true)
     private String panNo;
 
     private List<Product> productList = new ArrayList<>();

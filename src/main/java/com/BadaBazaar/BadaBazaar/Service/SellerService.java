@@ -10,8 +10,8 @@ import java.util.List;
 
 public interface SellerService {
 
-    public Mono<String> addSeller(SellerRequestDto sellerRequestDto);
-    public Flux<SellerResponseDto> getAllSellers();
+    Mono<SellerResponseDto> addSeller(SellerRequestDto sellerRequestDto);
+    Flux<SellerResponseDto> getAllSellers();
 
-    public Mono<SellerResponseDto> getSellerByPan(String panNo);
+    Mono<SellerResponseDto> getSellerByPan(String panNo);
 }

@@ -26,8 +26,12 @@ public class SellerController {
             @RequestBody SellerRequestDto sellerRequestDto){
 
         log.info("Seller adding..........");
+        Mono<SellerResponseDto> mono = sellerService.addSeller(sellerRequestDto);
+        mono.subscribe(item -> {
+            System.out.println("Received: " + item);
+        });
 
-        return new ResponseEntity(sellerService.addSeller(sellerRequestDto), HttpStatus.CREATED);
+        return new ResponseEntity(mono.block(), HttpStatus.CREATED);
     }
 
     @GetMapping("/get/all")

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,10 +23,10 @@ public class SellerServiceImp implements SellerService {
     SellerRepository sellerRepository;
 
     @Override
-    public Mono<String> addSeller(SellerRequestDto sellerRequestDto) {
+    public Mono<SellerResponseDto> addSeller(SellerRequestDto sellerRequestDto) {
         Seller seller = SellerConverter.sellerRequestDtoToSeller(sellerRequestDto);
-        return sellerRepository.save(seller)
-                .map(savedSeller -> "Seller ID: " + savedSeller.get_id());
+        Mono<Seller> sellerMono = sellerRepository.save(seller);
+        return sellerMono.map(SellerConverter::sellerToSellerResponseDto);
     }
 
     @Override

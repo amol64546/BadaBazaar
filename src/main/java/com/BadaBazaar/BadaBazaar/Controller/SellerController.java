@@ -3,6 +3,7 @@ package com.BadaBazaar.BadaBazaar.Controller;
 import com.BadaBazaar.BadaBazaar.RequestDto.SellerRequestDto;
 import com.BadaBazaar.BadaBazaar.ResponseDto.SellerResponseDto;
 import com.BadaBazaar.BadaBazaar.Service.Imp.SellerServiceImp;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ public class SellerController {
 
     @PostMapping("/add")
     public ResponseEntity addSeller(
+            @Parameter(name = "seller", description = "seller body to create", required = true)
             @RequestBody SellerRequestDto sellerRequestDto){
 
         log.info("Seller adding..........");

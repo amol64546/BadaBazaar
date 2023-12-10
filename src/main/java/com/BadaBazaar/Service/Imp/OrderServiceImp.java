@@ -10,7 +10,6 @@ import com.BadaBazaar.RequestDto.OrderRequestDto;
 import com.BadaBazaar.ResponseDto.OrderResponseDto;
 import com.BadaBazaar.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 
@@ -26,8 +25,6 @@ public class OrderServiceImp implements OrderService {
     @Autowired
     OrderRepository orderRepository;
 
-    @Autowired
-    JavaMailSender emailSender;
     @Autowired
     private ItemRepository itemRepository;
 
@@ -109,16 +106,6 @@ public class OrderServiceImp implements OrderService {
                 .orderDate(savedOrdered.getOrderDate())
                 .build();
 
-
-        // send an email
-//        String text = "Congrats your order with total value "+savedOrdered.getTotalCost()+" has been placed";
-//
-//        SimpleMailMessage message = new SimpleMailMessage();
-//        message.setFrom("amolnakhate240@gmail.com");
-//        message.setTo(customer.getEmail());
-//        message.setSubject("Order Placed Notification");
-//        message.setText(text);
-//        emailSender.send(message);
 
         return orderResponseDto;
     }

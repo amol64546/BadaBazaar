@@ -2,7 +2,7 @@ package com.BadaBazaar.Service.Imp;
 
 import com.BadaBazaar.Converter.ProductConverter;
 import com.BadaBazaar.Enum.ProductCategory;
-import com.BadaBazaar.Exception.SellerNotFoundException;
+import com.BadaBazaar.Exception.SellerError;
 import com.BadaBazaar.Repository.ProductRepository;
 import com.BadaBazaar.RequestDto.ProductByCategoryRequestDto;
 import com.BadaBazaar.Model.Product;
@@ -10,6 +10,7 @@ import com.BadaBazaar.Model.Seller;
 import com.BadaBazaar.Repository.SellerRepository;
 import com.BadaBazaar.ResponseDto.ProductResponseDto;
 import com.BadaBazaar.Service.ProductService;
+import com.gaian.services_error.exception.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,12 +26,12 @@ public class ProductServiceImp implements ProductService {
     ProductRepository productRepository;
 
     @Override
-    public String addProduct(ProductByCategoryRequestDto productByCategoryRequestDto) throws SellerNotFoundException {
+    public String addProduct(ProductByCategoryRequestDto productByCategoryRequestDto) {
         Seller seller;
         try{
             seller = sellerRepository.findById(productByCategoryRequestDto.getSellerId()).get();
         }catch (Exception e){
-            throw new SellerNotFoundException("Seller does not present");
+            throw new ApiException(SellerError.SELLER_NOT_FOUND);
         }
 
         Product product = ProductConverter.productRequestDtoToProduct(productByCategoryRequestDto);

@@ -2,7 +2,7 @@ package com.BadaBazaar.Service.Imp;
 
 import com.BadaBazaar.Converter.ProductConverter;
 import com.BadaBazaar.Enum.ProductStatus;
-import com.BadaBazaar.Exception.CustomerNotFoundException;
+import com.BadaBazaar.Exception.CustomerError;
 import com.BadaBazaar.Model.*;
 import com.BadaBazaar.Repository.CustomerRepository;
 import com.BadaBazaar.Repository.OrderRepository;
@@ -11,9 +11,9 @@ import com.BadaBazaar.RequestDto.OrderRequestDto;
 import com.BadaBazaar.ResponseDto.ItemResponseDto;
 import com.BadaBazaar.ResponseDto.OrderResponseDto;
 import com.BadaBazaar.Service.CartService;
+import com.gaian.services_error.exception.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,8 +31,6 @@ public class CartServiceImp implements CartService {
     @Autowired
     ProductRepository productRepository;
 
-    @Autowired
-    JavaMailSender emailSender;
     @Autowired
     private OrderRepository orderRepository;
 
@@ -88,7 +86,7 @@ public class CartServiceImp implements CartService {
             customer = customerRepository.findById(customerId).get();
         }
         catch(Exception e){
-            throw new CustomerNotFoundException("Invalid Customer id !!!");
+            throw new ApiException(CustomerError.CUSTOMER_NOT_FOUND);
         }
 
         List<OrderResponseDto> orderResponseDtoList = new ArrayList<>();
@@ -151,15 +149,6 @@ public class CartServiceImp implements CartService {
 
         }
 
-        // send an email
-//        String text = "Congrats your order with total value "+totalCost+" has been placed";
-//
-//        SimpleMailMessage message = new SimpleMailMessage();
-//        message.setFrom("amolnakhate240@gmail.com");
-//        message.setTo(customer.getEmail());
-//        message.setSubject("Order Placed Notification");
-//        message.setText(text);
-//        emailSender.send(message);
 
         cart.setItemList(new ArrayList<>());
         cart.setCartTotal(0);

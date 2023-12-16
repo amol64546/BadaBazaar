@@ -2,7 +2,7 @@ package com.BadaBazaar.Service.Imp;
 
 import com.BadaBazaar.Converter.ProductConverter;
 import com.BadaBazaar.Enum.ProductStatus;
-import com.BadaBazaar.Exception.CustomerError;
+import com.BadaBazaar.Exception.CustomerNotFoundException;
 import com.BadaBazaar.Model.*;
 import com.BadaBazaar.Repository.CustomerRepository;
 import com.BadaBazaar.Repository.OrderRepository;
@@ -11,7 +11,6 @@ import com.BadaBazaar.RequestDto.OrderRequestDto;
 import com.BadaBazaar.ResponseDto.ItemResponseDto;
 import com.BadaBazaar.ResponseDto.OrderResponseDto;
 import com.BadaBazaar.Service.CartService;
-import com.gaian.services_error.exception.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
@@ -86,7 +85,7 @@ public class CartServiceImp implements CartService {
             customer = customerRepository.findById(customerId).get();
         }
         catch(Exception e){
-            throw new ApiException(CustomerError.CUSTOMER_NOT_FOUND);
+            throw new CustomerNotFoundException("Customer not found");
         }
 
         List<OrderResponseDto> orderResponseDtoList = new ArrayList<>();

@@ -1,13 +1,12 @@
 package com.BadaBazaar.Service.Imp;
 
 import com.BadaBazaar.Converter.SellerConverter;
-import com.BadaBazaar.Exception.SellerError;
+import com.BadaBazaar.Exception.SellerNotFoundException;
 import com.BadaBazaar.Model.Seller;
 import com.BadaBazaar.Repository.SellerRepository;
 import com.BadaBazaar.RequestDto.SellerRequestDto;
 import com.BadaBazaar.ResponseDto.SellerResponseDto;
 import com.BadaBazaar.Service.SellerService;
-import com.gaian.services_error.exception.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,7 +52,7 @@ public class SellerServiceImp implements SellerService {
         Optional<Seller> seller = sellerRepository.findById(sellerId);
 
         if (ObjectUtils.isEmpty(seller)) {
-            throw new ApiException(SellerError.SELLER_NOT_FOUND);
+            throw new SellerNotFoundException("Seller not found");
         }
         sellerRepository.deleteById(sellerId);
 

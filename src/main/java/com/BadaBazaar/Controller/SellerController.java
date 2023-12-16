@@ -14,6 +14,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -79,7 +81,8 @@ public class SellerController {
     })
     @GetMapping(value = "/get/pan", produces = {"application/json"}, consumes = {"application/json"})
     public SellerResponseDto getSellerByPan(
-            @Parameter(name = "PanNo", example = "BAQPN1690C") @RequestParam String panNo){
+            @Parameter(name = "PanNo", example = "BAQPN1690C") @RequestParam String panNo,
+            @Parameter(hidden = true) @PageableDefault(page = 0, value = 10) Pageable pageable){
         return sellerService.getSellerByPan(panNo);
     }
 

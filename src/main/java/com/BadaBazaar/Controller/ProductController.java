@@ -1,6 +1,7 @@
 package com.BadaBazaar.Controller;
 
 import com.BadaBazaar.Enum.ProductCategory;
+import com.BadaBazaar.Exception.SellerNotFoundException;
 import com.BadaBazaar.RequestDto.ProductByCategoryRequestDto;
 import com.BadaBazaar.ResponseDto.ProductResponseDto;
 import com.BadaBazaar.Service.Imp.ProductServiceImp;
@@ -17,7 +18,7 @@ public class ProductController {
     ProductServiceImp productService;
 
     @PostMapping("/add")
-    public String addProduct(@RequestBody ProductByCategoryRequestDto productByCategoryRequestDto) {
+    public String addProduct(@RequestBody ProductByCategoryRequestDto productByCategoryRequestDto) throws SellerNotFoundException {
         return productService.addProduct(productByCategoryRequestDto);
 
     }

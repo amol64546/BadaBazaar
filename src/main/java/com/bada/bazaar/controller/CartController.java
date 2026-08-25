@@ -22,18 +22,37 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/v1/carts")
 public interface CartController {
 
-  @Operation(summary = "Add product to cart")
+  @Operation(
+    summary = "Add product to cart",
+    description = "Adds a specific quantity of a product to the user's cart",
+    requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Details of the product and quantity to add to the cart"),
+    responses = {
+      @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Confirmation message of the addition")
+    }
+  )
   @PostMapping
   ResponseEntity<ModelMap> addToCart(@RequestBody OrderRequestDto orderRequestDto,
                                      HttpServletRequest request);
 
-  @Operation(summary = "Checkout cart")
+  @Operation(
+    summary = "Checkout cart",
+    description = "Initiates the checkout process for the items currently in the cart",
+    responses = {
+      @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Confirmation message or order summary upon successful checkout")
+    }
+  )
   @PostMapping("{customerId}")
   ResponseEntity<ModelMap> checkout(@PathVariable Integer customerId,
                                     Integer cardId,
                                     HttpServletRequest request);
 
-  @Operation(summary = "Get all products in cart")
+  @Operation(
+    summary = "Get all products in cart",
+    description = "Retrieves a paginated list of all items present in the user's cart",
+    responses = {
+      @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "A paginated list of items in the cart")
+    }
+  )
   @GetMapping("{customerId}")
   ResponseEntity<Page<Item>> viewItems(@PathVariable Integer customerId,
                                        @Parameter(hidden = true) @PageableDefault(sort = "dateAdded",

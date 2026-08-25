@@ -19,7 +19,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/v1/admin")
 public interface AdminController {
 
-  @Operation(summary = "Get users by role")
+  @Operation(
+    summary = "Get users by role",
+    description = "Retrieves a paginated list of users filtered by their role (CUSTOMER or SELLER)",
+    responses = {
+      @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "A paginated list of users matching the specified role")
+    }
+  )
   @GetMapping
   ResponseEntity<Page<User>> getUsersByRole(
     @RequestParam Role role,

@@ -14,7 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/v1/orders")
 public interface OrderController {
 
-  @Operation(summary = "Place order")
+  @Operation(
+    summary = "Place order",
+    description = "Places a new order with the specified details",
+    requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Order details including products, quantities, and delivery information"),
+    responses = {
+      @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Returns the placed order's summary and confirmation")
+    }
+  )
   @PostMapping
   ResponseEntity<OrderResponseDto> placeOrder(@RequestBody OrderRequestDto orderRequestDto,
                                               HttpServletRequest request);

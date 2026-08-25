@@ -30,24 +30,50 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface ProductController {
 
   //       ROLE - SELLER
-  @Operation(summary = "Add product")
+  @Operation(
+    summary = "Add product",
+    description = "Adds a new product to the catalog, restricted to sellers",
+    requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Details of the new product to be added"),
+    responses = {
+      @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Returns the newly added product's details")
+    }
+  )
   @PostMapping
   ResponseEntity<ProductResponseDto> addProductBySellerId(
     @Validated @Valid @RequestBody ProductPostRequestDto productPostRequestDto,
     HttpServletRequest request);
 
-  @Operation(summary = "Update product")
+  @Operation(
+    summary = "Update product",
+    description = "Updates the details of an existing product",
+    requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Updated product information"),
+    responses = {
+      @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Returns the updated product's details")
+    }
+  )
   @PutMapping
   ResponseEntity<ProductResponseDto> updateProduct(
     @Validated @Valid @RequestBody ProductPutRequestDto productPutRequestDto,
     HttpServletRequest request);
 
-  @Operation(summary = "Remove product")
+  @Operation(
+    summary = "Remove product",
+    description = "Deletes a specific product from the catalog",
+    responses = {
+      @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Confirmation message of product deletion")
+    }
+  )
   @DeleteMapping("/{productId}")
   ResponseEntity<ModelMap> deleteProduct(@PathVariable Integer productId,
                                          HttpServletRequest request);
 
-  @Operation(summary = "Get products by sellerId")
+  @Operation(
+    summary = "Get products by sellerId",
+    description = "Retrieves a paginated list of all products listed by a specific seller",
+    responses = {
+      @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "A paginated list of the seller's products")
+    }
+  )
   @GetMapping("/{sellerId}")
   ResponseEntity<Page<Product>> getProductsBySellerId(
     @PathVariable Integer sellerId,
@@ -56,7 +82,13 @@ public interface ProductController {
     HttpServletRequest request);
 
 
-  @Operation(summary = "Get products by category")
+  @Operation(
+    summary = "Get products by category",
+    description = "Retrieves a paginated list of products filtered by category",
+    responses = {
+      @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "A paginated list of products in the specified category")
+    }
+  )
   @GetMapping("category/{category}")
   ResponseEntity<Page<Product>> getProductByCategory(
     @PathVariable Category category,
